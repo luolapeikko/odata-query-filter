@@ -5,7 +5,16 @@
 Handles most OData comparison operators (`eq` | `ne` | `gt` | `ge` | `lt` | `le`), logical operators (`and` | `or` | `not`), array lambda operators (`any` | `all`), and functions (`contains` | `startswith` | `endswith` | `tolower` | `toupper` | `trim` | `length` | `concat` | `indexof` | `substring`).
 Automatic ISO DateTime string / Date handling, and uses `toString()` for custom objects in comparisons.
 
-## Usage example
+## Usage examples
+
+```typescript
+interface Person {
+  name: string;
+}
+const personList = [{ name: "John" }, { name: "Mary" }];
+const personFilter = buildODataFilter<Person>("name eq 'John'");
+console.log(personList.filter(personFilter)); // [{name: 'John'}]
+```
 
 ```typescript
 import { buildODataFilter } from "@luolapeikko/odata-filter";
