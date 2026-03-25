@@ -210,9 +210,39 @@ describe('buildODataFilter', () => {
 			expect(filter({name: 'John', age: 30, active: true, city: 'NYC'})).toBe(true);
 			expect(filter({name: 'Jane', age: 25, active: true, city: 'LA'})).toBe(false);
 		});
+
+		it('should handle concat', () => {
+			const filter = buildODataFilter<{first: string; last: string}>("concat(first, last) eq 'JohnDoe'");
+			expect(filter({first: 'John', last: 'Doe'})).toBe(true);
+			expect(filter({first: 'Jane', last: 'Doe'})).toBe(false);
+		});
+
+		it('should handle indexof', () => {
+			const filter = buildODataFilter<Person>("indexof(name, 'oh') eq 1");
+			expect(filter({name: 'John', age: 30, active: true, city: 'NYC'})).toBe(true);
+			expect(filter({name: 'Jane', age: 25, active: true, city: 'LA'})).toBe(false);
+		});
+
+		it('should handle substring with start index', () => {
+			const filter = buildODataFilter<Person>("substring(name, 1) eq 'ohn'");
+			expect(filter({name: 'John', age: 30, active: true, city: 'NYC'})).toBe(true);
+			expect(filter({name: 'Jane', age: 25, active: true, city: 'LA'})).toBe(false);
+		});
+
+		it('should handle substring with start index and length', () => {
+			const filter = buildODataFilter<Person>("substring(name, 1, 2) eq 'oh'");
+			expect(filter({name: 'John', age: 30, active: true, city: 'NYC'})).toBe(true);
+			expect(filter({name: 'Jane', age: 25, active: true, city: 'LA'})).toBe(false);
+		});
 	});
 
 	describe('parentheses', () => {
+		it('should allow a parenthesized literal as the right-hand side of a comparison', () => {
+			const filter = buildODataFilter<Person>('age gt (25)');
+			expect(filter({name: 'John', age: 30, active: true, city: 'NYC'})).toBe(true);
+			expect(filter({name: 'Jane', age: 20, active: true, city: 'LA'})).toBe(false);
+		});
+
 		it('should respect operator precedence with parentheses', () => {
 			// Without parentheses: 'and' binds tighter than 'or'
 			const filter1 = buildODataFilter<Person>("name eq 'Bob' or name eq 'John' and age gt 25");

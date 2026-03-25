@@ -22,7 +22,7 @@
 	"scripts": {
 		"build": "tsdown src/index.ts --minify --sourcemap --format cjs,esm --dts --clean",
 		"test": "vitest test --typecheck --run --no-isolate --coverage",
-		"coverage": "vitest test --typecheck --run --no-isolate --reporter=dot --coverage --coverage.reporter=lcov",
+		"coverage": "vitest test --run --no-isolate --reporter=dot --coverage --coverage.reporter=lcov",
 		"validate": "tsc --noEmit --project tsconfig.test.json"
 	},
 	"keywords": [
