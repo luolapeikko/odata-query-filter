@@ -4,11 +4,11 @@ const ISO_DATETIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?
 const whiteSpaceChars = new Set([' ', '\t', '\r', '\n']);
 
 function charTokens(char: string, tokens: Token[]): number {
-    let index = 0;
+	let index = 0;
 	switch (char) {
 		case '(':
 			tokens.push({type: 'lparen', value: '('});
-            index++;
+			index++;
 			break;
 		case ')':
 			tokens.push({type: 'rparen', value: ')'});
@@ -64,7 +64,7 @@ function tokenizeDateTime(input: string, tokens: Token[], index: number): number
 }
 
 function isNumberChar(char: string | undefined): boolean {
-	return char !== undefined && ((char >= '0' && char <= '9') || char === '.' );
+	return char !== undefined && ((char >= '0' && char <= '9') || char === '.');
 }
 
 function tokenizeNumber(char: string, input: string, tokens: Token[], index: number): number {

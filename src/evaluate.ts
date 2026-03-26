@@ -108,12 +108,12 @@ function toMs(v: unknown): number {
  * @param value The value to potentially coerce to a string.
  * @returns An object indicating whether coercion was performed and the resulting value if applicable.
  */
-function coerceToStringResult(value: unknown): {ok: true; value: string} | {ok: false} {
+function coerceToStringResult(value: unknown): {ok: true; value: string} | {ok: false; value: unknown} {
 	// Coerce objects with custom toString() to string (like MongoDB ObjectId instance)
 	if (isCustomObject(value)) {
 		return {ok: true, value: String(value)};
 	}
-	return {ok: false};
+	return {ok: false, value};
 }
 
 /**
@@ -141,8 +141,8 @@ export function evaluate(node: AstNode, data: Record<string, unknown>): unknown 
 				right = toMs(right);
 			} else if (leftCoercionRes.ok || rightCoercionRes.ok) {
 				// Tier 2: Objects with a custom coerce to string
-				left = leftCoercionRes.ok ? leftCoercionRes.value : left;
-				right = rightCoercionRes.ok ? rightCoercionRes.value : right;
+				left = leftCoercionRes.value;
+				right = rightCoercionRes.value;
 			}
 			const operator = node.operator;
 			switch (operator) {
